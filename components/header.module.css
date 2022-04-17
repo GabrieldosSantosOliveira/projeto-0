@@ -1,0 +1,11 @@
+
+
+.container {
+    display:flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:center;
+    grid-area: header;
+    font-family: Bebas Neue;
+    font-size: 30px;
+}
