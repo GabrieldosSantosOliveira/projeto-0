@@ -43,11 +43,11 @@ export default function Cadastro() {
 
     return (
         <>
-        
+
             <form onSubmit={handleSubmite} className={styles.container}>
                 <div>Cadastro</div>
                 <input type="text" name="username" required aria-label="Nome Completo" placeholder='Nome Completo' onChange={handleSubmite} value={formValue.username || ''} />
-                <input type="date" name="date" required aria-label="Data de Nascimento"   onChange={handleSubmite} value={formValue.date || ''} />
+                <input type="date" name="date" required aria-label="Data de Nascimento" onChange={handleSubmite} value={formValue.date || ''} />
 
                 <select name='office' onChange={handleSubmite} value={formValue.office || ''}>
 
@@ -65,9 +65,9 @@ export default function Cadastro() {
 
                     {instituto}
                 </select>
-                <input type="email" name="email" required aria-label="E-mail"  placeholder='E-mail'onChange={handleSubmite} value={formValue.email || ''} />
-                <input type="password" name="password" required aria-label="Senha "  placeholder='Senha' onChange={handleSubmite} value={formValue.password || ''} />
-                <input type="password" name="confirme" required aria-label="Confirme Senha"  placeholder='Confirme Senha'onChange={handleSubmite} value={formValue.confirme || ''} />
+                <input type="email" name="email" required aria-label="E-mail" placeholder='E-mail' onChange={handleSubmite} value={formValue.email || ''} />
+                <input type="password" name="password" required aria-label="Senha " placeholder='Senha' onChange={handleSubmite} value={formValue.password || ''} />
+                <input type="password" name="confirme" required aria-label="Confirme Senha" placeholder='Confirme Senha' onChange={handleSubmite} value={formValue.confirme || ''} />
 
                 <button type="submit">Submit</button>
             </form>

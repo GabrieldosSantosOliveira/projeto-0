@@ -1,11 +1,13 @@
 import styles from '/components/header.module.css';
-
+import Link from 'next/link'
 export default function Header() {
-    return(
+    return (
         <>
-        <header className={styles.container}>
-            PROMATCH
-        </header>
+            <header className={styles.container}>
+                <Link href="/">
+                    <a>   PROMATCH</a>
+                </Link>
+            </header>
         </>
     );
 }
