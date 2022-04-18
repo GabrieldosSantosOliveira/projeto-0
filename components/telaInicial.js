@@ -19,10 +19,10 @@ export default function telaInicial() {
                 </div>
                 </div>
                 <div className={styles.flexContainer}>
-                <Link href="/posts/login.js">
+                <Link href="/posts/login">
                     <a className={styles.entra}>Entre</a>
                 </Link>
-                <Link href="/posts/cadastro.js">
+                <Link href="/posts/cadastro">
                 <a className={styles.cadastrar}>Cadastro</a>
                 </Link>
                 </div>
