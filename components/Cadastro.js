@@ -7,15 +7,15 @@ const institution = [{ "nome": "Instituto Federal de Educação, Ciência e Tecn
 { "nome": "Instituto Federal de Educação, Ciência e Tecnologia do Rio Grande do Sul", "sigla": "IFRS" }, { "nome": "Instituto Federal de Educação, Ciência e Tecnologia Farroupilha", "sigla": "IFFarroupilha" }, { "nome": "Instituto Federal de Educação, Ciência e Tecnologia Sul-Rio-Grandense", "sigla": "IFSUL" }, { "nome": "Instituto Federal de Educação, Ciência e Tecnologia do Paraná", "sigla": "IFPR" }, { "nome": "Instituto Federal de Educação, Ciência e Tecnologia de Santa Catarina", "sigla": "IFSC" }, { "nome": "Instituto Federal de Educação, Ciência e Tecnologia Catarinense", "sigla": "IFC" }]
 
 const instituto = institution.map(valor => {
-    return <option value={valor.sigla}>{valor.nome}</option>
+    return <option value={valor.sigla} key={valor.sigla}>{valor.nome}</option>
 })
 const profissao = ["Engenharia Agrícola", "Sistemas de Informação", "Física,Zootecnia", "Análise e Desenvolvimento de Sistemas",
     "Português", "Letras", "Matemática", "Análise de Sistemas", "Agronomia", "Educação Física", "Geografia", "Ciências Sociais",
     "Ciência da Computação", "Tecnologia de Processamento de Dados", "Filosofia", "Ciências Biológicas", " Artes Visuais", "Informática/Desenvolvimento Web",
     "Agricultura", "Letras (habilitação em Português/Espanhol)", "História", " Ciências Agrárias/Fitotecnia", "Ciências Agrárias", "Química",
-    "Português/Inglês", "Análise de Sistemas", "Administração", "Engenharia de Computação"];
+    "Português/Inglês", "Administração", "Engenharia de Computação"];
 const select = profissao.map(valor => {
-    return <option value={valor}>{valor}</option>
+    return <option value={valor} key={valor}>{valor}</option>
 })
 
 
@@ -23,54 +23,60 @@ export default function Cadastro() {
 
     const [formValue, setFormValue] = useState({})
 
-    const handleSubmite = (e) => {
+    const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormValue({ ...formValue, [name]: value });
     }
 
-
+console.log(formValue)
 
     // const [nome,setNome] = useState('')
     // const NomeCompleto=(e) =>{
     //    setNome(e.target.value)
-    // }
-    // const handleSubmite = (e) => {
-    //     e.preventDefault()
-    //     const formData = new FormData(e.target)
-    //     const data = Object.fromEntries(formData)
-    //     console.log(data);''
-    // }
+   // }
+
+    const handleSubmite = (e) => {
+        e.preventDefault()
+        const formData = new FormData(e.target)
+        const data = Object.fromEntries(formData)
+        console.log(data);''
+    }
+
 
     return (
         <>
 
             <form onSubmit={handleSubmite} className={styles.container}>
                 <div>Cadastro</div>
-                <input type="text" name="username" required aria-label="Nome Completo" placeholder='Nome Completo' onChange={handleSubmite} value={formValue.username || ''} />
-                <input type="date" name="date" required aria-label="Data de Nascimento" onChange={handleSubmite} value={formValue.date || ''} />
+                <input type="text" name="username" required aria-label="Nome Completo" placeholder='Nome Completo' onChange={handleInputChange} value={formValue.username || ''} />
+                <input type="text" name="date" required placeholder='Data de Nascimento' aria-label="Data de Nascimento" onChange={handleInputChange} value={formValue.date || '' } />
 
-                <select name='office' onChange={handleSubmite} value={formValue.office || ''}>
+                <select name='office' onChange={handleInputChange} value={formValue.office || ''}>
 
-                    <option selected hidden>Selecine sua area</option>
+                    <option hidden>Selecine sua area</option>
                     <option value="Estudante">Estudante</option>
                     <option value="Professor">Professor</option>
+
                 </select>
 
-                <select name='area' onChange={handleSubmite} value={formValue.area || ''}>
-                    <option selected hidden>Selecione seu cargo</option>
+                <select name='area' onChange={handleInputChange} value={formValue.area || ''}>
+                    <option value="cargo" hidden>Selecione seu cargo</option>
+
                     {select}
                 </select>
-                <select name='institution' onChange={handleSubmite} value={formValue.institution || ''}>
-                    <option selected hidden>Selecione seu Instituto</option>
+                <select name='institution' onChange={handleInputChange} value={formValue.institution || ''}>
+                    <option value="cargo" hidden>Selecione seu Instituto</option>
 
                     {instituto}
-                </select>
-                <input type="email" name="email" required aria-label="E-mail" placeholder='E-mail' onChange={handleSubmite} value={formValue.email || ''} />
-                <input type="password" name="password" required aria-label="Senha " placeholder='Senha' onChange={handleSubmite} value={formValue.password || ''} />
-                <input type="password" name="confirme" required aria-label="Confirme Senha" placeholder='Confirme Senha' onChange={handleSubmite} value={formValue.confirme || ''} />
 
-                <button type="submit">Submit</button>
+                </select>
+                <input type="email" name="email" required aria-label="E-mail" placeholder='E-mail' onChange={handleInputChange} value={formValue.email || ''} />
+                <input type="password" name="password" required aria-label="Senha " placeholder='Senha' onChange={handleInputChange} value={formValue.password || ''} />
+                <input type="password" name="confirme" required aria-label="Confirme Senha" placeholder='Confirme Senha' onChange={handleInputChange} value={formValue.confirme || ''} />
+
+                <button type="submit">Confirmar</button>
             </form>
+
         </>
-    )
+    );
 }
