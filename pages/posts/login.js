@@ -13,9 +13,9 @@ export default function cadastro() {
                 alt='Cadastro'
                 width={1302.6}
                 height={1575.6}
-                
+
             />
-            <Login/>
+            <Login />
             <Footer />
         </div>
     )

@@ -1,40 +1,41 @@
 .container {
-    grid-area: aside;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    font-family: Inter;
-    font-size: 18px;
-    align-items: center;
+  grid-area: aside;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  font-family: Inter;
+  font-size: 18px;
+  align-items: center;
 }
 
 .container input,
 .container button,
 .container select {
-    height: 35px;
-    width: 90%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
+  height: 35px;
+  width: 90%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
 }
 
 .container div {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 30px;
-    margin-top: 10px;
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 30px;
+  margin-top: 10px;
 }
 
 .container input {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15), inset 0px 4px 4px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15),
+    inset 0px 4px 4px rgba(0, 0, 0, 0.15);
 }
 
 .container button {
-    filter: drop-shadow(0px 4px 4px rgba(143, 0, 255, 0.25));
-    background: rgba(143, 0, 255, 0.64);
+  filter: drop-shadow(0px 4px 4px rgba(143, 0, 255, 0.25));
+  background: rgba(143, 0, 255, 0.64);
 }
 
 .container select {
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15), inset 0px 4px 4px rgba(0, 0, 0, 0.15);
-
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15),
+    inset 0px 4px 4px rgba(0, 0, 0, 0.15);
 }

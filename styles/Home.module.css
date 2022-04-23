@@ -1,13 +1,13 @@
 .container {
   display: grid;
-  grid-template-rows: 50px  1fr 50px;
+  grid-template-rows: 50px 1fr 50px;
   grid-template-columns: 1fr 1fr;
-  grid-template-areas: 'header header'
-  'mean aside'
-  'footer footer';
-  
+  grid-template-areas:
+    "header header"
+    "mean aside"
+    "footer footer";
 }
-.container img{
+.container img {
   grid-area: mean;
 }
 .main {

@@ -8,14 +8,38 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "eslint-config-prettier": {
+    "extends": [
+      "react-app",
+      "react-app/jest",
+      "prettier",
+      "prettier/react"
+    ]
+  },
   "dependencies": {
     "axios": "^0.26.1",
     "next": "12.1.5",
     "react": "18.0.0",
-    "react-dom": "18.0.0"
+    "react-dom": "18.0.0",
+    "react-input-mask": "^2.0.4"
   },
   "devDependencies": {
     "eslint": "8.13.0",
-    "eslint-config-next": "12.1.5"
+    "eslint-config-next": "12.1.5",
+    "eslint-config-prettier": "^8.5.0",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.4.0",
+    "prettier": "^2.6.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js.css": [
+      "eslint",
+      "prettier --write"
+    ]
   }
 }
