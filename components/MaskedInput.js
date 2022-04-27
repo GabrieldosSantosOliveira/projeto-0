@@ -1,23 +1,25 @@
-import InputMask from "react-input-mask";
+// import InputMask from "react-input-mask";
 
-const onlyNumbers = (e) => e.replace(/[^0-9]/g, '')
-const MaskedInput = ({ value, onChange, placeholder, mask, name }) => {
-    function handleChange(event) {
-        onChange({
-            ...event,
-            target: {
-                ...event.target,
-                name,
-                value: onlyNumbers(event.target.value)
+// const onlyNumbers = (e) => e.replace(/[^0-9]/g, '')
+// const MaskedInput = ({ id, value, onChange, placeholder, mask, name }, props) => {
+//     function handleChange(event) {
+//         onChange({
+//             ...event,
+//             target: {
+//                 ...event.target,
+//                 name,
+//                 value: onlyNumbers(event.target.value)
 
-            }
-        })
-    }
-    return <InputMask
-        mask={mask}
-        value={value}
-        placeholder={placeholder}
-        onChange={handleChange} />;
-}
+//             }
+//         })
+//     }
+//     return <InputMask
+//         mask={mask}
+//         id={id}
+//         value={value}
+//         placeholder={placeholder}
+//         {...props}
+//         onChange={handleChange} />;
+// }
 
-export default MaskedInput 
+// export default MaskedInput
