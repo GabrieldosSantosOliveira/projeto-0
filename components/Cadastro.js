@@ -5,8 +5,11 @@ import NumberFormat from 'react-number-format';
 import institutos from "./json/institutos.json"
 import curso from "./json/curso.json"
 import * as Yup from 'yup'
-import api from '../pages/api/api.js'
+import axios from 'axios';
 import { validateBr } from 'js-brasil';
+
+
+const onlyNumbers = (e) => e.replace(/[^0-9]/g, '')
 
 const Input = (props) => (
     <NumberFormat {...props} />
@@ -20,10 +23,6 @@ const select = curso.map(valor => {
 })
 
 const schema = Yup.object().shape({
-    username: Yup.string()
-        .min(3, "Insira um nickname maior")
-        .max(70, "Insira um nickname menor")
-        .required('Insira um nickname valido'),
     firstName: Yup.string()
         .min(2, "Insira um nome maior")
         .max(70, "Insira um nome menor")
@@ -52,60 +51,55 @@ const schema = Yup.object().shape({
         .required('Escolha uma senha valida'),
 
 })
+
 export default function Cadastro() {
     function checarData(data) {
         let error
-        console.log(data)
         if (validateBr.data(data)) {
             error = ""
         } else {
             error = "Insira um numero valido"
         }
-        console.log(error)
         return error;
 
 
     }
     function checarCpf(data) {
         let error
-        console.log(data)
         if (validateBr.cpf(data)) {
             error = ""
-            console.log(true)
 
         } else {
             error = "Insira um numero valido"
-            console.log(false)
         }
-        console.log(error)
         return error;
 
 
     }
 
 
-
+    let router = useRouter();
     async function handleSubmite(formValues) {
-        const date = {
-            "username": formValues.username,
+        const data = {
+            "username": onlyNumbers(formValues.cpf),
             "firstName": formValues.firstName,
             "lastName": formValues.lastName,
             "email": formValues.email,
             "confirmed": true,
             "data": formValues.data,
             "cpf": formValues.cpf,
-            "ocupa": formValues.ocupa,
+            "ocupa": formValues.cargo,
             "formacao": formValues.formacao,
             "instituto": formValues.instituto,
             "password": formValues.password,
 
         }
-
-        const response = await api.post("/api/users", date)
-        console.log(response)
-        router.push("/posts/login")
-
+        const response = await axios.post("http://localhost:1337/api/users", data)
+        console.log(response);
+        router.push('/')
     }
+
+
 
     return (
 
@@ -132,11 +126,6 @@ export default function Cadastro() {
 
                     < Form className={styles.Flex}>
 
-                        <div className={styles.container}>
-                            <label htmlFor='username'>Nickname</label>
-                            <Field id='username' name="username" type="text" placeholder="Nome Completo" />
-                            {errors.username && touched.username && (<span>{errors.username}</span>)}
-                        </div>
                         <div className={styles.container}>
                             <label htmlFor='firstName'>Nome</label>
                             <Field id='firstName' name="firstName" type="text" placeholder="Nome Completo" />
