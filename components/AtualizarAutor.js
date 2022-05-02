@@ -1,26 +1,10 @@
-import styles from '/components/cadastro.module.css'
+import styles from '/components/cadastrarlivros.module.css'
 import { Formik, Form, Field } from 'formik'
 import { useRouter } from 'next/router';
-import NumberFormat from 'react-number-format';
-import institutos from "./json/institutos.json"
-import curso from "./json/curso.json"
 import * as Yup from 'yup'
-import axios from 'axios';
+import api from '../pages/api/api';
 
-
-
-const onlyNumbers = (e) => e.replace(/[^0-9]/g, '')
-
-const Input = (props) => (
-    <NumberFormat {...props} />
-);
-
-const instituto = institutos.map(valor => {
-    return <option value={valor.sigla} key={valor.sigla}>{valor.nome}</option>
-})
-const select = curso.map(valor => {
-    return <option value={valor} key={valor}>{valor}</option>
-})
+const onlyDate = (e) => e.replace("T00:00:00.000Z", '')
 function dataAtual() {
     let data = new Date();
     let dia = String(data.getDate()).padStart(2, '0');
@@ -32,29 +16,33 @@ function dataAtual() {
 const schema = Yup.object().shape({
     nome: Yup.string()
         .min(2, "Insira um nome maior")
-        .max(70, "Insira um nome menor")
+        .max(50, "Insira um nome menor")
         .required('Insira um nome valido'),
     sobrenome: Yup.string()
-        .min(4, "Insira um sobrenome maior")
-        .max(70, "Insira um sobrenome menor")
+        .min(2, "Insira um sobrenome maior")
+        .max(50, "Insira um sobrenome menor")
         .required('Insira um sobrenome valido'),
     data: Yup.date()
         .max(dataAtual(), "Digite uma data valida")
         .required('Insira uma data valida'),
 })
 
-export default function Cadastro() {
+export default function Atualiza(props) {
 
 
     let router = useRouter();
     async function handleSubmite(formValues) {
         const data = {
+            "id": props.id,
             "nome": formValues.nome,
             "sobrenome": formValues.sobrenome,
             "data_nascimento": formValues.data,
 
+
         }
-        const response = await axios.post("http://localhost:1337/api/users", data)
+        console.log(data)
+
+        const response = await api.put("/atualizar", data)
         console.log(response);
         router.push('/')
     }
@@ -68,10 +56,9 @@ export default function Cadastro() {
             <Formik
                 validationSchema={schema}
                 initialValues={{
-                    nome: '',
-                    sobrenome: '',
-                    lastName: '',
-                    data: '',
+                    nome: props.nome,
+                    sobrenome: props.sobrenome,
+                    data: onlyDate(props.data)
 
 
 
@@ -91,10 +78,9 @@ export default function Cadastro() {
                             <Field id='sobrenome' name="sobrenome" type="text" placeholder="Sobrenome" />
                             {errors.sobrenome && touched.sobrenome && (<span>{errors.sobrenome}</span>)}
                         </div>
-
                         <div className={styles.container}>
                             <label htmlFor='data'>Data de Nascimento</label>
-                            <Field id='data' name="data" type="date" placeholder="Data de Nascimento" />
+                            <Field id='data' name="data" type="date" placeholder="Data de Publicação" />
                             {errors.data && touched.data && (<span>{errors.data}</span>)}
 
                         </div>

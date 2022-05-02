@@ -1,10 +1,9 @@
 import Header from '/components/Header'
 import Footer from '/components/Footer'
-import Image from 'next/image'
-import styles from '../../styles/cadastro.module.css'
 import Logo from '../../components/Logo'
-import Cadastro from '/components/Cadastro'
-export default function cadastro() {
+import styles from '../../styles/cadastro.module.css'
+import Cadastro from '../../components/CadastrarLivros'
+export default function cadastrolivros() {
     return (
         <div className={styles.container}>
             <Logo />

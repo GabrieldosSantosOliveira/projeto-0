@@ -3,8 +3,26 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Footer from '/components/Footer'
 import Header from '../components/Header'
-import TelaInicial from '../components/telaInicial'
-export default function Home() {
+import Logo from '../components/Logo'
+import CardAutor from '../components/CardAutor'
+import axios from 'axios'
+
+
+export async function getServerSideProps() {
+  const url = 'https://skeleton-nodejs-express-ejs.gabrieldos7.repl.co';
+  const response = await axios.get(url)
+  const autores = response.data
+
+
+  return {
+    props: {
+      autores
+    }
+  }
+}
+
+export default function Home({ autores }) {
+
   return (
     <div className={styles.container}>
       <Head>
@@ -13,13 +31,19 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <Image
-        src="/images/tela_inicial.jpg"
-        alt="Estudantes"
-        width={1920}
-        height={1920}
-      />
-      <TelaInicial/>
+      <Logo />
+      <div className={styles.autor}>
+        {autores.map(autor => {
+
+          return (
+            <div key={autor.id}>
+              <CardAutor id={autor.id} nome={autor.nome} sobrenome={autor.sobrenome} data={autor.data_nascimento} />
+
+            </div>
+          )
+        })
+        }
+      </div>
       <Footer />
     </div>
   )

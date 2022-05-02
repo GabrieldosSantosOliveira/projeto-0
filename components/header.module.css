@@ -1,9 +1,16 @@
 .container {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   grid-area: header;
   font-family: Bebas Neue;
-  font-size: 30px;
+  font-size: 18px;
+}
+.container > div {
+  border-left: 2px solid black;
+}
+.item {
+  color: #8b7cf2;
+  margin-left: 5px;
+  margin-right: 5px;
 }

@@ -5,9 +5,11 @@
 
 .Flex {
   grid-area: aside;
+  height: 100vh;
   display: flex;
   justify-content: space-evenly;
   flex-direction: column;
+  align-items: center;
   font-family: Inter;
   font-size: 18px;
 }
@@ -15,7 +17,7 @@
 .Flex button,
 .Flex select {
   height: 35px;
-  width: 90%;
+  width: 80vw;
   padding: 7px;
   border: none;
   border-radius: 5px;
