@@ -28,9 +28,9 @@ export default function CardAutor({ id, nome, sobrenome, data }) {
     }
     return (
         <div className={styles.container}>
-            <div>
-                <div>{nome + " " + sobrenome}</div>
-                <span >{formatDate(data)}</span>
+            <div>{nome + " " + sobrenome}</div>
+            <div>{formatDate(data)}</div>
+            <div className={styles.botoes}>
                 <button onClick={Deletar}>Deletar</button>
                 <button onClick={Atualizar}>Atualizar</button>
             </div>

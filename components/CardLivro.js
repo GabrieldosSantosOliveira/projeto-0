@@ -31,9 +31,9 @@ export default function CardLivros({ id, titulo, autor, editora, data, preco }) 
             <div>
                 <span >{formatDate(data)}</span>
             </div>
-            <h2>{titulo + " - " + editora}</h2>
+            <div>{titulo + " - " + editora}</div>
 
-            <h3>{"R" + preco}</h3>
+            <div>{"R" + preco}</div>
             <button onClick={Deletar}>Deletar</button>
             <button onClick={atualizar}>Atualizar</button>
 

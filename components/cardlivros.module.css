@@ -1,7 +1,23 @@
 .container {
-    width: 80vw;
-    padding: 1rem;
-    background-color: #8f00ff;
-    border-radius: 7px;
-  }
-  
+  width: 80vw;
+  padding: 1rem;
+  background-color: #8f00ff;
+  border-radius: 7px;
+  font-size: 16px;
+  font-family: Inter;
+}
+.container div:nth-child(2),
+.container div:nth-child(3),
+.container button {
+  margin-top: 7px;
+}
+.container button {
+  background-color: #f4e5ff;
+  border: 2px solid #f4e5ff;
+  margin-left: 5px;
+  border-radius: 4px;
+}
+.container button:hover {
+  box-shadow: 0px 1px 1px #f4e5ff;
+  cursor: pointer;
+}
