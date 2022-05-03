@@ -1,39 +1,29 @@
-import { useRouter } from 'next/router'
 import Header from '/components/Header'
 import Footer from '/components/Footer'
 import Logo from '../../components/Logo'
-import Atualiza from '../../components/AtualizarLivro'
-import styles from '../../styles/cadastro.module.css'
-import axios from 'axios'
+import AtualizarLivro from '../../components/AtualizarLivro'
+import styles from '../../styles/atualizarLivro.module.css'
+import api from '../api/api'
 
+//Função pega os dados de um livro especifico
 export async function getServerSideProps(context) {
     const id = context.query.id;
-    const url = 'https://skeleton-nodejs-express-ejs.gabrieldos7.repl.co/pegar?id=' + id;
-    console.log(url)
-
-    const response = await axios.get(url)
+    const response = await api.get('/pegar?id=' + id)
     const livros = response.data
     const data = livros[0]
-
-
     return {
         props: {
-            id: data.id,
-            titulo: data.titulo,
-            autor: data.autor,
-            editora: data.editora,
-            data_publicacao: data.data_publicacao,
-            preco: data.preco,
+            data
         }
     }
 }
-export default function Atualizar(props) {
+export default function Atualizar({ data }) {
     return (
         <>
             <div className={styles.container}>
                 <Logo />
                 <Header />
-                <Atualiza id={props.id} titulo={props.titulo} autor={props.autor} editora={props.editora} data={props.data_publicacao} preco={props.preco} />
+                <AtualizarLivro id={data.id} titulo={data.titulo} autor={data.autor} editora={data.editora} data={data.data_publicacao} preco={data.preco} />
                 <Footer />
             </div>
         </>

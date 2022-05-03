@@ -1,36 +1,30 @@
-import { useRouter } from 'next/router'
 import Header from '/components/Header'
 import Footer from '/components/Footer'
 import Logo from '../../components/Logo'
-import Atualiza from '../../components/AtualizarAutor.js'
-import styles from '../../styles/cadastro.module.css'
-import axios from 'axios'
+import AtualizarAutor from '../../components/AtualizarAutor.js'
+import styles from '../../styles/AtualizarAutor.module.css'
+import api from '../api/api'
 
+
+//Função pega os dados de um autor especifico
 export async function getServerSideProps(context) {
     const id = context.query.id;
-    const url = 'https://skeleton-nodejs-express-ejs.gabrieldos7.repl.co/autor?id=' + id;
-    const response = await axios.get(url)
+    const response = await api.get('/autor?id=' + id)
     const autor = response.data
     const data = autor[0]
-
-
     return {
         props: {
-            id: data.id,
-            nome: data.nome,
-            sobrenome: data.sobrenome,
-            data_nascimento: data.data_nascimento,
+            data
         }
     }
 }
-export default function Atualizar(props) {
-    const router = useRouter()
+export default function Atualizar({ data }) {
     return (
         <>
             <div className={styles.container}>
                 <Logo />
                 <Header />
-                <Atualiza id={props.id} nome={props.nome} sobrenome={props.sobrenome} data={props.data_nascimento} />
+                <AtualizarAutor id={data.id} nome={data.nome} sobrenome={data.sobrenome} data={data.data_nascimento} />
                 <Footer />
             </div>
         </>

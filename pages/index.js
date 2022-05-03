@@ -1,28 +1,22 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import Footer from '/components/Footer'
 import Header from '../components/Header'
 import Logo from '../components/Logo'
 import CardAutor from '../components/CardAutor'
-import axios from 'axios'
+import api from './api/api'
 
-
+//Função pega os dados de todos os autores
 export async function getServerSideProps() {
-  const url = 'https://skeleton-nodejs-express-ejs.gabrieldos7.repl.co';
-  const response = await axios.get(url)
+  const response = await api.get("/")
   const autores = response.data
-
-
   return {
     props: {
       autores
     }
   }
 }
-
 export default function Home({ autores }) {
-
   return (
     <div className={styles.container}>
       <Head>
@@ -34,11 +28,9 @@ export default function Home({ autores }) {
       <Logo />
       <div className={styles.autor}>
         {autores.map(autor => {
-
           return (
             <div key={autor.id}>
               <CardAutor id={autor.id} nome={autor.nome} sobrenome={autor.sobrenome} data={autor.data_nascimento} />
-
             </div>
           )
         })

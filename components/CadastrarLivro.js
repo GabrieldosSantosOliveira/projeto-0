@@ -1,13 +1,10 @@
-import styles from '/components/cadastrarlivros.module.css'
+import styles from '/components/cadastrarlivro.module.css'
 import { Formik, Form, Field } from 'formik'
 import { useRouter } from 'next/router';
-import NumberFormat from 'react-number-format';
 import * as Yup from 'yup'
 import api from '../pages/api/api';
 
-const Input = (props) => (
-    <NumberFormat {...props} />
-);
+// Função verifica se a data digitada é maior que a data atual 
 function dataAtual() {
     let data = new Date();
     let dia = String(data.getDate()).padStart(2, '0');
@@ -16,6 +13,7 @@ function dataAtual() {
     let dataAtual = ano + '-' + mes + '-' + dia;
     return dataAtual
 }
+// Esquema de validação usando Yup
 const schema = Yup.object().shape({
     titulo: Yup.string()
         .min(2, "Insira um titulo maior")
@@ -38,10 +36,9 @@ const schema = Yup.object().shape({
         .required("Insira um preço valido")
 })
 
-export default function Cadastro() {
-
-
+export default function CadastrarLivro() {
     let router = useRouter();
+    //Função para fazer o post de Livro
     async function handleSubmite(formValues) {
         const data = {
             "titulo": formValues.titulo,
@@ -49,22 +46,15 @@ export default function Cadastro() {
             "editora": formValues.editora,
             "data_publicacao": formValues.data,
             "preco": formValues.preco,
-
-
         }
-        console.log(data)
-
         const response = await api.post("/inserir/livros", data)
         console.log(response);
-        router.push('/')
+        router.push('/posts/mostrarLivro')
     }
 
-
-
     return (
-
-
         <>
+            {/* Formulario  com valores iniciais e com errors e touched*/}
             <Formik
                 validationSchema={schema}
                 initialValues={{
@@ -73,38 +63,35 @@ export default function Cadastro() {
                     autor: '',
                     data: '',
                     preco: '',
-
-
-
                 }}
                 onSubmit={handleSubmite}>
                 {({ errors, touched }) => (
 
-                    < Form className={styles.Flex}>
+                    < Form className={styles.container}>
 
-                        <div className={styles.container}>
+                        <div className={styles.items}>
                             <label htmlFor='titulo'>Título</label>
                             <Field id='titulo' name="titulo" type="text" placeholder="Título" />
                             {errors.titulo && touched.titulo && (<span>{errors.titulo}</span>)}
                         </div>
-                        <div className={styles.container}>
+                        <div className={styles.items}>
                             <label htmlFor='editora'>Editora</label>
                             <Field id='editora' name="editora" type="text" placeholder="Editora" />
                             {errors.editora && touched.editora && (<span>{errors.editora}</span>)}
                         </div>
-                        <div className={styles.container}>
+                        <div className={styles.items}>
                             <label htmlFor='autor'>Autor</label>
                             <Field id='autor' name="autor" type="number" placeholder="Autor" />
                             {errors.autor && touched.autor && (<span>{errors.autor}</span>)}
                         </div>
 
-                        <div className={styles.container}>
+                        <div className={styles.items}>
                             <label htmlFor='data'>Data de Publicação</label>
                             <Field id='data' name="data" type="date" placeholder="Data de Publicação" />
                             {errors.data && touched.data && (<span>{errors.data}</span>)}
 
                         </div>
-                        <div className={styles.container}>
+                        <div className={styles.items}>
                             <label htmlFor='preco'>Preço</label>
                             <Field name="preco" id='preco' type="number" placeholder="Preço" />
                             {errors.preco && touched.preco && (<span>{errors.preco}</span>)}
@@ -115,7 +102,6 @@ export default function Cadastro() {
                     </Form>
                 )}
             </Formik>
-
         </>
     );
 }

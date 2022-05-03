@@ -1,20 +1,22 @@
 import styles from '/components/header.module.css';
 import Link from 'next/link'
 import { UserCirclePlus, ListDashes, Books, Book } from 'phosphor-react'
+
 export default function Header() {
     return (
         <>
             <header className={styles.container}>
                 <div>
-                    <Link href="/">
+                    <Link href="/posts/cadastrarAutor">
                         <a>
                             <UserCirclePlus className={styles.item} size={20} />
                             Autor
                         </a>
                     </Link>
                 </div>
+
                 <div >
-                    <Link href="/posts/livro">
+                    <Link href="/posts/cadastrarLivro">
                         <a>
                             <Book className={styles.item} size={20} />
 
@@ -22,17 +24,18 @@ export default function Header() {
                         </a>
                     </Link>
                 </div>
+
                 <div >
-                    <Link href="/posts/cadastro">
+                    <Link href="/">
                         <a>
                             <ListDashes className={styles.item} size={20} />
-
                             Mostrar Autor
                         </a>
                     </Link>
                 </div>
+
                 <div >
-                    <Link href="/posts/cadastrarlivros">
+                    <Link href="/posts/mostrarLivro">
                         <a>
                             <Books className={styles.item} size={20} />
 

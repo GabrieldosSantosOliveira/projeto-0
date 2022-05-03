@@ -1,26 +1,10 @@
-import styles from '/components/cadastro.module.css'
+import styles from '/components/cadastrarAutor.module.css'
 import { Formik, Form, Field } from 'formik'
 import { useRouter } from 'next/router';
-import NumberFormat from 'react-number-format';
-import institutos from "./json/institutos.json"
-import curso from "./json/curso.json"
 import * as Yup from 'yup'
-import axios from 'axios';
+import api from '../pages/api/api';
 
-
-
-const onlyNumbers = (e) => e.replace(/[^0-9]/g, '')
-
-const Input = (props) => (
-    <NumberFormat {...props} />
-);
-
-const instituto = institutos.map(valor => {
-    return <option value={valor.sigla} key={valor.sigla}>{valor.nome}</option>
-})
-const select = curso.map(valor => {
-    return <option value={valor} key={valor}>{valor}</option>
-})
+// Função verifica se a data digitada é maior que a data atual 
 function dataAtual() {
     let data = new Date();
     let dia = String(data.getDate()).padStart(2, '0');
@@ -29,6 +13,8 @@ function dataAtual() {
     let dataAtual = ano + '-' + mes + '-' + dia;
     return dataAtual
 }
+
+// Esquema de validação usando Yup
 const schema = Yup.object().shape({
     nome: Yup.string()
         .min(2, "Insira um nome maior")
@@ -43,10 +29,10 @@ const schema = Yup.object().shape({
         .required('Insira uma data valida'),
 })
 
-export default function Cadastro() {
-
+export default function CadastrarAutor() {
 
     let router = useRouter();
+    //Função para fazer o post de Autor
     async function handleSubmite(formValues) {
         const data = {
             "nome": formValues.nome,
@@ -54,17 +40,13 @@ export default function Cadastro() {
             "data_nascimento": formValues.data,
 
         }
-        const response = await axios.post("http://localhost:1337/api/users", data)
+        const response = await api.post("/inserir", data)
         console.log(response);
         router.push('/')
     }
-
-
-
     return (
-
-
         <>
+            {/* Formulario  com valores iniciais e com errors e touched*/}
             <Formik
                 validationSchema={schema}
                 initialValues={{
@@ -72,35 +54,29 @@ export default function Cadastro() {
                     sobrenome: '',
                     lastName: '',
                     data: '',
-
-
-
                 }}
                 onSubmit={handleSubmite}>
                 {({ errors, touched }) => (
+                    < Form className={styles.container}>
 
-                    < Form className={styles.Flex}>
-
-                        <div className={styles.container}>
+                        <div className={styles.items}>
                             <label htmlFor='nome'>Nome</label>
                             <Field id='nome' name="nome" type="text" placeholder="Nome" />
                             {errors.nome && touched.nome && (<span>{errors.nome}</span>)}
                         </div>
-                        <div className={styles.container}>
+                        <div className={styles.items}>
                             <label htmlFor='sobrenome'>Sobrenome</label>
                             <Field id='sobrenome' name="sobrenome" type="text" placeholder="Sobrenome" />
                             {errors.sobrenome && touched.sobrenome && (<span>{errors.sobrenome}</span>)}
                         </div>
 
-                        <div className={styles.container}>
+                        <div className={styles.items}>
                             <label htmlFor='data'>Data de Nascimento</label>
                             <Field id='data' name="data" type="date" placeholder="Data de Nascimento" />
                             {errors.data && touched.data && (<span>{errors.data}</span>)}
 
                         </div>
-
                         <button type="submit">Confirmar</button>
-
                     </Form>
                 )}
             </Formik>

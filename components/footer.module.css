@@ -1,9 +1,8 @@
 .container {
+  grid-area: footer;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  grid-area: footer;
   background: rgba(143, 0, 255, 0.1);
   font-family: Inter;
   font-size: 14px;

@@ -1,18 +1,14 @@
-
 import { formatDate } from '../pages/api/utils'
 import styles from '/components/cardautor.module.css'
 import { useRouter } from 'next/router'
-import axios from 'axios'
+import api from '../pages/api/api'
 
 export default function CardAutor({ id, nome, sobrenome, data }) {
+    // Função chamada para deletar o autor do banco
     async function Deletar() {
         let confirmacao = confirm("Você quer deletar o Autor?")
         if (confirmacao == true) {
-            const data = {
-                "id": id
-            }
-            console.log(data)
-            const response = await axios.delete("https://skeleton-nodejs-express-ejs.gabrieldos7.repl.co/deletar", data)
+            const response = await api.delete("/deletar/" + id)
             console.log(response);
             alert("Autor Excluido")
         } else {
@@ -20,11 +16,9 @@ export default function CardAutor({ id, nome, sobrenome, data }) {
         }
     }
     const router = useRouter()
-
+    // Função envia o usuario para a pagina de atualização
     function Atualizar() {
-        let url = "/autor/" + id;
-        console.log(url)
-        router.push(url)
+        router.push("/autor/" + id)
     }
     return (
         <div className={styles.container}>

@@ -1,0 +1,58 @@
+.container {
+  grid-area: aside;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+  font-family: Inter;
+  font-size: 18px;
+  height: 100vh;
+}
+.items {
+  display: flex;
+  flex-direction: column;
+}
+.container input,
+.container button,
+.container select {
+  height: 35px;
+  width: 80vw;
+  padding: 7px;
+  border: none;
+  border-radius: 5px;
+  margin-top: 5px;
+}
+
+.container div {
+  font-size: 14px;
+}
+
+.container input,
+.container select{
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15),
+    inset 0px 4px 4px rgba(0, 0, 0, 0.15);
+}
+
+.container button {
+  filter: drop-shadow(0px 4px 4px rgba(143, 0, 255, 0.25));
+  background: rgba(143, 0, 255, 0.64);
+}
+.container button:hover {
+  filter: drop-shadow(0px 8px 8px rgba(143, 0, 255, 0.25));
+  background: rgba(143, 0, 255, 1);
+  cursor: pointer;
+}
+.container span {
+  color: red;
+  font-size: 11px;
+  text-align: start;
+  margin-top: 8px;
+  margin-left: 8px;
+}
+
+.container input:focus,
+.container select:focus {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15),
+  inset 0px 4px 4px rgba(0, 0, 0, 0.15);
+  border:2px solid rgba(143, 0, 255, 1);
+}
