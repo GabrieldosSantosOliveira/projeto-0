@@ -28,9 +28,9 @@ const schema = Yup.object().shape({
         .max(50, "Insira um titulo menor")
         .required('Insira um titulo valido'),
     editora: Yup.string()
-        .min(4, "Insira um editora maior")
-        .max(50, "Insira um editora menor")
-        .required('Insira um editora valido'),
+        .min(4, "Insira uma editora maior")
+        .max(50, "Insira uma editora menor")
+        .required('Insira uma editora valida'),
     autor: Yup.number()
         .positive("Insira um autor com id positivo")
         .integer("Insira um id inteiro")
