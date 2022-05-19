@@ -11,8 +11,8 @@
   margin-top: 5px;
 }
 .container button:nth-child(2) {
-    margin-left: 5px;
-  }
+  margin-left: 5px;
+}
 .container button {
   background-color: #f4e5ff;
   border: 2px solid #f4e5ff;
@@ -20,7 +20,7 @@
 }
 .container button:hover {
   box-shadow: 2px 3px 3px rgba(244, 229, 255, 0.35),
-  inset 2px 3px 3px rgba(244, 229, 255, 0.35);
+    inset 2px 3px 3px rgba(244, 229, 255, 0.35);
   cursor: pointer;
   transition: all 0.3s ease;
 }

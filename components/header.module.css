@@ -1,19 +1,126 @@
-.container {
+.navbar {
   grid-area: header;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
+  height: 50px;
+  background-color: #8f00ff;
+}
+.logo {
+  font-size: 28px;
   font-family: Bebas Neue;
-  font-size: 18px;
+  font-weight: bold;
 }
-.container > div{
-  border-bottom: 2px solid black;
+.navLinks {
+  display: flex;
+  justify-content: flex-end;
+  list-style: none;
+  width: 75%;
 }
-.container > div:hover {
-  border-color:#8b7cf2;
+.autor,
+.livro,
+.mostrarLivro,
+.mostrarAutor {
+  text-decoration: none;
+  font-family: Inter;
+  font-size: 16px;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
 }
-.item {
-  color: #8b7cf2;
-  margin-left: 5px;
-  margin-right: 5px;
+.navbar li:hover {
+  color: rgba(0, 0, 0, 0.5);
+}
+.mobileMenuIcon {
+  display: none;
+}
+.animation {
+  border-width: 2px 0px 0px 0px;
+  border-style: solid;
+  border-color: black;
+  width: 20px;
+}
+.animation:after,
+.animation:before {
+  content: " ";
+  display: block;
+  width: 20px;
+  height: 2px;
+  background-color: black;
+  margin-top: 5px;
+  transition: all 0.2s ease;
+}
+@media screen and (max-width: 768px) {
+  .logo {
+    display: flex;
+    position: absolute;
+    align-items: center;
+  }
+  .navLinks {
+    display: none;
+  }
+  .autor:hover,
+  .livro:hover,
+  .mostrarLivro:hover,
+  .mostrarAutor:hover {
+    color: rgba(0, 0, 0, 0.5);
+  }
+  .navLinksMobile {
+    position: absolute;
+    display: block;
+    list-style: none;
+    background-color: #8f00ff;
+    left: 0;
+    top: 33px;
+    transition: all 0.5s ease-out;
+    width: 100%;
+  }
+
+  .autor,
+  .livro,
+  .mostrarLivro,
+  .mostrarAutor {
+    text-align: center;
+    padding: 32px;
+    width: 100%;
+    transition: all 0.5 ease;
+  }
+  .mobileMenuIcon {
+    display: block;
+    position: absolute;
+    font-size: 30px;
+    color: white;
+    background-color: #8f00ff;
+    border: none;
+    outline: none;
+    top: 15px;
+    right: 25px;
+    cursor: pointer;
+  }
+  .animate {
+    border: none;
+    position: relative;
+  }
+  .animate:before {
+    content: " ";
+    display: block;
+    width: 20px;
+    height: 2px;
+    background-color: black;
+    margin-top: 5px;
+    transform: rotate(135deg);
+    transition: all 0.2s ease;
+  }
+  .animate:after {
+    content: " ";
+    display: block;
+    width: 20px;
+    height: 2px;
+    background-color: black;
+    margin-top: 5px;
+    transform: rotate(-135deg);
+    position: relative;
+    transition: all 0.2s ease;
+    top: -7px;
+  }
 }
