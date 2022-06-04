@@ -3,7 +3,7 @@ import Footer from "../../components/Footer";
 import AtualizarLivro from "../../components/AtualizarLivro";
 import styles from "../../styles/atualizarLivro.module.css";
 import api from "../api/api";
-
+import { Autor } from "../../components/CadastrarLivro";
 type Livro = {
   data: {
     id: number;
@@ -13,6 +13,7 @@ type Livro = {
     data_publicacao: string;
     preco: string;
   };
+  autor: Autor[]
 };
 type Context = {
   query: {
@@ -25,26 +26,27 @@ export async function getServerSideProps(context: Context) {
   const id = context.query.id;
   console.log(context.query);
   const response = await api.get("/pegar?id=" + id);
+  
   const livros = response.data;
   const data = livros[0];
+
+  const resposta = await api.get("/")
+  const autor = resposta.data
   return {
     props: {
       data,
+      autor
     },
   };
 }
-export default function Atualizar({ data }: Livro) {
+export default function Atualizar({ data ,autor }: Livro) {
   return (
     <>
       <div className={styles.container}>
         <Header />
         <AtualizarLivro
-          id={data.id}
-          titulo={data.titulo}
-          autor={data.autor}
-          editora={data.editora}
-          data={data.data_publicacao}
-          preco={data.preco}
+          livro={data}
+          newAutor={autor}
         />
         <Footer />
       </div>

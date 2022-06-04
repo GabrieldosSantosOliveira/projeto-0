@@ -3,9 +3,17 @@ import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import api from "../pages/api/api";
-
+import {Autor} from "../components/CadastrarLivro"
 type Data = string;
-type Props = {
+type Livro = {
+  id?: number;
+  titulo: string;
+  autor: number;
+  editora: string;
+  data_publicacao: string;
+  preco: string;
+};
+type FormType = {
   id?: number;
   titulo: string;
   autor: number;
@@ -52,13 +60,13 @@ const schema = Yup.object().shape({
     .required("Insira um preço valido"),
 });
 
-export default function AtualizarLivro(props: Props) {
+export default function AtualizarLivro({ newAutor, livro}: {newAutor: Autor[], livro: Livro}) {
   let router = useRouter();
 
   //Função para fazer a atualização dos dados
-  async function handleSubmite(formValues: Props) {
+  async function handleSubmite(formValues: FormType) {
     const data = {
-      id: props.id,
+      id: livro.id,
       titulo: formValues.titulo,
       autor: formValues.autor,
       editora: formValues.editora,
@@ -69,18 +77,20 @@ export default function AtualizarLivro(props: Props) {
     console.log(response);
     router.push("/posts/mostrarLivro");
   }
+  const values = {
+      titulo: livro.titulo,
+      editora: livro.editora,
+      autor: livro.autor,
+      data: onlyDate(livro.data_publicacao),
+      preco: onlyNumbers(livro.preco),
+    
+  }
   return (
     <>
       {/* Formulario  com valores iniciais e com errors e touched*/}
       <Formik
         validationSchema={schema}
-        initialValues={{
-          titulo: props.titulo,
-          editora: props.editora,
-          autor: props.autor,
-          data: onlyDate(props.data),
-          preco: onlyNumbers(props.preco),
-        }}
+        initialValues={values}
         onSubmit={handleSubmite}
       >
         {({ errors, touched }) => (
@@ -112,9 +122,17 @@ export default function AtualizarLivro(props: Props) {
               <Field
                 id="autor"
                 name="autor"
-                type="number"
+                as="select"
                 placeholder="Autor"
-              />
+              >
+              { 
+              newAutor.map(autor =>{
+   return (
+     <option value={autor.id} key={autor.id}>{autor.id}</option>
+   )
+              })
+              }
+              </Field>
               {errors.autor && touched.autor && <span>{errors.autor}</span>}
             </div>
 
