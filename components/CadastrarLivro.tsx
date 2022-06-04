@@ -3,6 +3,7 @@ import { Formik, Form, Field } from "formik";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import api from "../pages/api/api";
+import { GetStaticProps } from "next";
 
 type Props = {
   titulo: string;
@@ -11,6 +12,16 @@ type Props = {
   data: string;
   preco: string;
 };
+export  type Autor = {
+  
+    id: number;
+    nome: string;
+    sobrenome: string;
+    data_nascimento: string;
+  
+};
+
+
 
 // Função verifica se a data digitada é maior que a data atual
 function dataAtual() {
@@ -44,7 +55,7 @@ const schema = Yup.object().shape({
     .required("Insira um preço valido"),
 });
 
-export default function CadastrarLivro() {
+export default function CadastrarLivro({autor}: {autor: Autor[]}) {
   let router = useRouter();
   //Função para fazer o post de Livro
   async function handleSubmite(formValues: Props) {
@@ -59,7 +70,7 @@ export default function CadastrarLivro() {
     console.log(response);
     router.push("/posts/mostrarLivro");
   }
-
+console.log(autor)
   return (
     <>
       {/* Formulario  com valores iniciais e com errors e touched*/}
@@ -103,9 +114,16 @@ export default function CadastrarLivro() {
               <Field
                 id="autor"
                 name="autor"
-                type="number"
-                placeholder="Autor"
-              />
+                as="select"
+              >
+              {
+                autor.map(autor =>{
+                  return(
+                    <option value={autor.id} key={autor.id}>{autor.id} : {autor.nome}</option>
+                  )
+                })
+              }
+                </Field>
               {errors.autor && touched.autor && <span>{errors.autor}</span>}
             </div>
 
