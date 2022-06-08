@@ -1,11 +1,12 @@
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import AtualizarLivro from "../../components/AtualizarLivro";
-import styles from "../../styles/atualizarLivro.module.css";
-import api from "../api/api";
-import { Autor } from "../../components/CadastrarLivro";
-type Livro = {
-  data: {
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import AtualizarLivro from '../../components/AtualizarLivro';
+import styles from '../../styles/atualizarLivro.module.css';
+import api from '../api/api';
+import { GetServerSideProps } from 'next';
+
+type LivroType = {
+  livro: {
     id: number;
     titulo: string;
     autor: number;
@@ -13,41 +14,40 @@ type Livro = {
     data_publicacao: string;
     preco: string;
   };
-  autor: Autor[]
+  autor: AutorType[];
 };
-type Context = {
-  query: {
-    id: number;
-  };
+
+type AutorType = {
+  id: number;
+  nome: string;
+  sobrenome: string;
+  data_nascimento: string;
 };
 
 //Função pega os dados de um livro especifico
-export async function getServerSideProps(context: Context) {
-  const id = context.query.id;
-  console.log(context.query);
-  const response = await api.get("/pegar?id=" + id);
-  
-  const livros = response.data;
-  const data = livros[0];
-
-  const resposta = await api.get("/")
-  const autor = resposta.data
-  return {
-    props: {
-      data,
-      autor
-    },
+export const getServerSideProps: GetServerSideProps =
+  async (ctx) => {
+    const id = ctx.params?.id;
+    const response = await api.get(`/livros/${id}`);
+    const livro = response.data;
+    const resposta = await api.get('/autor');
+    const autor = resposta.data;
+    return {
+      props: {
+        livro,
+        autor
+      }
+    };
   };
-}
-export default function Atualizar({ data ,autor }: Livro) {
+export default function Atualizar({
+  livro,
+  autor
+}: LivroType) {
   return (
     <>
       <div className={styles.container}>
         <Header />
-        <AtualizarLivro
-          livro={data}
-          newAutor={autor}
-        />
+        <AtualizarLivro livro={livro} Autor={autor} />
         <Footer />
       </div>
     </>

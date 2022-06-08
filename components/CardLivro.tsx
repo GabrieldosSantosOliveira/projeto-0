@@ -1,9 +1,9 @@
-import { formatDate } from "../pages/api/utils";
-import { useRouter } from "next/router";
-import styles from "/components/cardlivro.module.css";
-import api from "../pages/api/api";
+import { formatDate } from '../pages/api/utils';
+import Link from 'next/link';
+import styles from '/components/cardlivro.module.css';
+import api from '../pages/api/api';
 
-type Props = {
+type LivroType = {
   id?: number;
   titulo: string;
   autor: number;
@@ -12,31 +12,41 @@ type Props = {
   preco: string;
 };
 
-export default function CardLivro(props: Props) {
+export default function CardLivro({
+  id,
+  autor,
+  data,
+  editora,
+  preco,
+  titulo
+}: LivroType) {
   async function Deletar() {
     // Função chamada para deletar o livro do banco
-    let confirmacao = confirm("Você quer deletar o Livro?");
+    let confirmacao = confirm('Você quer deletar o Livro?');
     if (confirmacao == true) {
-      const response = await api.delete("/deletar/livros/" + props.id);
+      const response = await api.delete(`/livro/${id}`);
       console.log(response);
-      alert("Livro Excluido");
+      if (!response.statusText) alert('Livro Não Excluido');
+      alert('Livro Excluido');
     } else {
-      alert("Livro não excluido");
+      alert('Livro não excluido');
     }
   }
-  const router = useRouter();
-  // Função envia o usuario para a pagina de atualização
-  function atualizar() {
-    router.push("/posts/" + props.id);
-  }
+
   return (
     <div className={styles.container}>
-      <div>{formatDate(props.data)}</div>
-      <div>{props.titulo + " - " + props.editora}</div>
+      <div>{formatDate(data)}</div>
+      <div>{titulo + ' - ' + editora}</div>
 
-      <div>{"R" + props.preco}</div>
+      <div>{'R' + preco}</div>
       <button onClick={Deletar}>Deletar</button>
-      <button onClick={atualizar}>Atualizar</button>
+
+      <Link href={`/posts/${id}`}>
+        <a>Atualizar</a>
+      </Link>
+      <Link href={`/livro/${id}`}>
+        <a>Mostrar mais detalhes</a>
+      </Link>
     </div>
   );
 }

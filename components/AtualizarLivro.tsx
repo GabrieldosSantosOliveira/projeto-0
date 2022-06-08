@@ -1,10 +1,21 @@
-import styles from "/components/atualizarlivro.module.css";
-import { Formik, Form, Field } from "formik";
-import { useRouter } from "next/router";
-import * as Yup from "yup";
-import api from "../pages/api/api";
-import {Autor} from "../components/CadastrarLivro"
-type Data = string;
+import styles from '/components/atualizarlivro.module.css';
+import { Formik, Form, Field } from 'formik';
+import { useRouter } from 'next/router';
+import * as Yup from 'yup';
+import api from '../pages/api/api';
+import { onlyDate } from './LimpaData';
+import { DataAtual } from './DataAtual';
+import { onlyNumbers } from './LimpaPrecos';
+type DataType = {
+  Autor: AutorType[];
+  livro: Livro;
+};
+type AutorType = {
+  id: number;
+  nome: string;
+  sobrenome: string;
+  data_nascimento: string;
+};
 type Livro = {
   id?: number;
   titulo: string;
@@ -21,70 +32,70 @@ type FormType = {
   data: string;
   preco: string;
 };
-//Função retira a valores indesejados da do preço
-const onlyNumbers = (e: Data) => e.replace("$", "");
-
-//Função retira a valores indesejados da data
-const onlyDate = (e: Data) => e.replace("T00:00:00.000Z", "");
-
-// Função verifica se a data digitada é maior que a data atual
-function dataAtual() {
-  let data = new Date();
-  let dia = String(data.getDate()).padStart(2, "0");
-  let mes = String(data.getMonth() + 1).padStart(2, "0");
-  let ano = data.getFullYear();
-  let dataAtual = ano + "-" + mes + "-" + dia;
-  return dataAtual;
-}
 
 // Esquema de validação usando Yup
 const schema = Yup.object().shape({
   titulo: Yup.string()
-    .min(2, "Insira um titulo maior")
-    .max(50, "Insira um titulo menor")
-    .required("Insira um titulo valido"),
+    .min(2, 'Insira um titulo maior')
+    .max(50, 'Insira um titulo menor')
+    .required('Insira um titulo valido'),
   editora: Yup.string()
-    .min(4, "Insira uma editora maior")
-    .max(50, "Insira uma editora menor")
-    .required("Insira uma editora valida"),
+    .min(4, 'Insira uma editora maior')
+    .max(50, 'Insira uma editora menor')
+    .required('Insira uma editora valida'),
   autor: Yup.number()
-    .positive("Insira um autor com id positivo")
-    .integer("Insira um id inteiro")
-    .required("Insira um autor valido"),
+    .positive('Insira um autor com id positivo')
+    .integer('Insira um id inteiro')
+    .required('Insira um autor valido'),
 
   data: Yup.date()
-    .max(dataAtual(), "Digite uma data valida")
-    .required("Insira uma data valida"),
+    .max(DataAtual(), 'Digite uma data valida')
+    .required('Insira uma data valida'),
   preco: Yup.number()
-    .positive("Insira um preço positivo")
-    .required("Insira um preço valido"),
+    .positive('Insira um preço positivo')
+    .required('Insira um preço valido')
 });
 
-export default function AtualizarLivro({ newAutor, livro}: {newAutor: Autor[], livro: Livro}) {
+export default function AtualizarLivro({
+  Autor,
+  livro
+}: DataType) {
+  const {
+    autor,
+    data_publicacao,
+    editora,
+    preco,
+    titulo,
+    id
+  } = livro;
   let router = useRouter();
-
   //Função para fazer a atualização dos dados
-  async function handleSubmite(formValues: FormType) {
-    const data = {
-      id: livro.id,
-      titulo: formValues.titulo,
-      autor: formValues.autor,
-      editora: formValues.editora,
-      data_publicacao: formValues.data,
-      preco: formValues.preco,
+  async function handleSubmite({
+    autor,
+    data,
+    editora,
+    preco,
+    titulo,
+    id
+  }: FormType) {
+    const dados = {
+      id: id,
+      titulo: titulo,
+      autor: autor,
+      editora: editora,
+      data_publicacao: data,
+      preco: preco
     };
-    const response = await api.put("/atualizar/livros", data);
-    console.log(response);
-    router.push("/posts/mostrarLivro");
+    const response = await api.put('/livros', dados);
+    router.push('/posts/mostrarLivro');
   }
   const values = {
-      titulo: livro.titulo,
-      editora: livro.editora,
-      autor: livro.autor,
-      data: onlyDate(livro.data_publicacao),
-      preco: onlyNumbers(livro.preco),
-    
-  }
+    titulo: titulo,
+    editora: editora,
+    autor: autor,
+    data: onlyDate(data_publicacao),
+    preco: onlyNumbers(preco)
+  };
   return (
     <>
       {/* Formulario  com valores iniciais e com errors e touched*/}
@@ -103,7 +114,9 @@ export default function AtualizarLivro({ newAutor, livro}: {newAutor: Autor[], l
                 type="text"
                 placeholder="Título"
               />
-              {errors.titulo && touched.titulo && <span>{errors.titulo}</span>}
+              {errors.titulo && touched.titulo && (
+                <span>{errors.titulo}</span>
+              )}
             </div>
             <div className={styles.items}>
               <label htmlFor="editora">Editora</label>
@@ -125,26 +138,32 @@ export default function AtualizarLivro({ newAutor, livro}: {newAutor: Autor[], l
                 as="select"
                 placeholder="Autor"
               >
-              { 
-              newAutor.map(autor =>{
-   return (
-     <option value={autor.id} key={autor.id}>{autor.id}</option>
-   )
-              })
-              }
+                {Autor.map(({ id }) => {
+                  return (
+                    <option value={id} key={id}>
+                      {id}
+                    </option>
+                  );
+                })}
               </Field>
-              {errors.autor && touched.autor && <span>{errors.autor}</span>}
+              {errors.autor && touched.autor && (
+                <span>{errors.autor}</span>
+              )}
             </div>
 
             <div className={styles.items}>
-              <label htmlFor="data">Data de Publicação</label>
+              <label htmlFor="data">
+                Data de Publicação
+              </label>
               <Field
                 id="data"
                 name="data"
                 type="date"
                 placeholder="Data de Publicação"
               />
-              {errors.data && touched.data && <span>{errors.data}</span>}
+              {errors.data && touched.data && (
+                <span>{errors.data}</span>
+              )}
             </div>
             <div className={styles.items}>
               <label htmlFor="preco">Preço</label>
@@ -154,7 +173,9 @@ export default function AtualizarLivro({ newAutor, livro}: {newAutor: Autor[], l
                 type="number"
                 placeholder="Preço"
               />
-              {errors.preco && touched.preco && <span>{errors.preco}</span>}
+              {errors.preco && touched.preco && (
+                <span>{errors.preco}</span>
+              )}
             </div>
             <button type="submit">Confirmar</button>
           </Form>

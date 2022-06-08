@@ -1,87 +1,84 @@
-import styles from "/components/cadastrarlivro.module.css";
-import { Formik, Form, Field } from "formik";
-import { useRouter } from "next/router";
-import * as Yup from "yup";
-import api from "../pages/api/api";
-import { GetStaticProps } from "next";
-
-type Props = {
+import styles from '/components/cadastrarlivro.module.css';
+import { Formik, Form, Field } from 'formik';
+import { useRouter } from 'next/router';
+import * as Yup from 'yup';
+import api from '../pages/api/api';
+import { DataAtual } from './DataAtual';
+type LivroType = {
   titulo: string;
   autor: number;
   editora: string;
   data: string;
   preco: string;
 };
-export  type Autor = {
-  
-    id: number;
-    nome: string;
-    sobrenome: string;
-    data_nascimento: string;
-  
+type AutorType = {
+  autor: [
+    {
+      id: number;
+      nome: string;
+      sobrenome: string;
+      data_nascimento: string;
+    }
+  ];
 };
 
-
-
-// Função verifica se a data digitada é maior que a data atual
-function dataAtual() {
-  let data = new Date();
-  let dia = String(data.getDate()).padStart(2, "0");
-  let mes = String(data.getMonth() + 1).padStart(2, "0");
-  let ano = data.getFullYear();
-  let dataAtual = ano + "-" + mes + "-" + dia;
-  return dataAtual;
-}
 // Esquema de validação usando Yup
 const schema = Yup.object().shape({
   titulo: Yup.string()
-    .min(2, "Insira um titulo maior")
-    .max(50, "Insira um titulo menor")
-    .required("Insira um titulo valido"),
+    .min(2, 'Insira um titulo maior')
+    .max(50, 'Insira um titulo menor')
+    .required('Insira um titulo valido'),
   editora: Yup.string()
-    .min(4, "Insira uma editora maior")
-    .max(50, "Insira uma editora menor")
-    .required("Insira uma editora valido"),
+    .min(4, 'Insira uma editora maior')
+    .max(50, 'Insira uma editora menor')
+    .required('Insira uma editora valido'),
   autor: Yup.number()
-    .positive("Insira um autor com id positivo")
-    .integer("Insira um id inteiro")
-    .required("Insira um autor valido"),
+    .positive('Insira um autor com id positivo')
+    .integer('Insira um id inteiro')
+    .required('Insira um autor valido'),
 
   data: Yup.date()
-    .max(dataAtual(), "Digite uma data valida")
-    .required("Insira uma data valida"),
+    .max(DataAtual(), 'Digite uma data valida')
+    .required('Insira uma data valida'),
   preco: Yup.number()
-    .positive("Insira um preço positivo")
-    .required("Insira um preço valido"),
+    .positive('Insira um preço positivo')
+    .required('Insira um preço valido')
 });
 
-export default function CadastrarLivro({autor}: {autor: Autor[]}) {
+export default function CadastrarLivro({
+  autor
+}: AutorType) {
   let router = useRouter();
   //Função para fazer o post de Livro
-  async function handleSubmite(formValues: Props) {
-    const data = {
-      titulo: formValues.titulo,
-      autor: formValues.autor,
-      editora: formValues.editora,
-      data_publicacao: formValues.data,
-      preco: formValues.preco,
+  async function handleSubmite({
+    autor,
+    data,
+    editora,
+    preco,
+    titulo
+  }: LivroType) {
+    const dados = {
+      titulo: titulo,
+      autor: autor,
+      editora: editora,
+      data_publicacao: data,
+      preco: preco
     };
-    const response = await api.post("/inserir/livros", data);
-    console.log(response);
-    router.push("/posts/mostrarLivro");
+    const response = await api.post('/livros', dados);
+    router.push('/posts/mostrarLivro');
   }
-console.log(autor)
+  console.log(autor);
   return (
     <>
       {/* Formulario  com valores iniciais e com errors e touched*/}
       <Formik
         validationSchema={schema}
         initialValues={{
-          titulo: "",
-          editora: "",
+          titulo: '',
+          editora: '',
           autor: 0,
-          data: "",
-          preco: "",
+          data: '',
+          preco: ''
         }}
         onSubmit={handleSubmite}
       >
@@ -95,7 +92,9 @@ console.log(autor)
                 type="text"
                 placeholder="Título"
               />
-              {errors.titulo && touched.titulo && <span>{errors.titulo}</span>}
+              {errors.titulo && touched.titulo && (
+                <span>{errors.titulo}</span>
+              )}
             </div>
             <div className={styles.items}>
               <label htmlFor="editora">Editora</label>
@@ -111,31 +110,33 @@ console.log(autor)
             </div>
             <div className={styles.items}>
               <label htmlFor="autor">Autor</label>
-              <Field
-                id="autor"
-                name="autor"
-                as="select"
-              >
-              {
-                autor.map(autor =>{
-                  return(
-                    <option value={autor.id} key={autor.id}>{autor.id} : {autor.nome}</option>
-                  )
-                })
-              }
-                </Field>
-              {errors.autor && touched.autor && <span>{errors.autor}</span>}
+              <Field id="autor" name="autor" as="select">
+                {autor.map((autor) => {
+                  return (
+                    <option value={autor.id} key={autor.id}>
+                      {autor.id} : {autor.nome}
+                    </option>
+                  );
+                })}
+              </Field>
+              {errors.autor && touched.autor && (
+                <span>{errors.autor}</span>
+              )}
             </div>
 
             <div className={styles.items}>
-              <label htmlFor="data">Data de Publicação</label>
+              <label htmlFor="data">
+                Data de Publicação
+              </label>
               <Field
                 id="data"
                 name="data"
                 type="date"
                 placeholder="Data de Publicação"
               />
-              {errors.data && touched.data && <span>{errors.data}</span>}
+              {errors.data && touched.data && (
+                <span>{errors.data}</span>
+              )}
             </div>
             <div className={styles.items}>
               <label htmlFor="preco">Preço</label>
@@ -145,7 +146,9 @@ console.log(autor)
                 type="number"
                 placeholder="Preço"
               />
-              {errors.preco && touched.preco && <span>{errors.preco}</span>}
+              {errors.preco && touched.preco && (
+                <span>{errors.preco}</span>
+              )}
             </div>
             <button type="submit">Confirmar</button>
           </Form>
