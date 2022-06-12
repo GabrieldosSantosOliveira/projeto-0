@@ -13,7 +13,6 @@ export const schema = Yup.object().shape({
     .positive('Insira um autor com id positivo')
     .integer('Insira um id inteiro')
     .required('Insira um autor valido'),
-
   data: Yup.date()
     .max(DataAtual(), 'Digite uma data valida')
     .required('Insira uma data valida'),

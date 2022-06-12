@@ -5,7 +5,6 @@ import { onlyDate } from '../Utils/cleanDate';
 import { onlyNumbers } from '../Utils/cleanPrice';
 import { schema } from '../Validation/book';
 import api from '../../pages/api/api';
-type Data = string;
 type Autor = {
   id: number;
   nome: string;
@@ -39,13 +38,27 @@ export default function AtualizarLivro({
   let router = useRouter();
 
   //Função para fazer a atualização dos dados
-  async function handleSubmite(formValues: FormType) {
+  async function handleSubmite({
+    autor,
+    data,
+    editora,
+    preco,
+    titulo
+  }: FormType) {
+    const dados = {
+      autor,
+      data_publicacao: data + 'T00:00:00.000Z',
+      editora,
+      preco,
+      titulo
+    };
+    console.log(dados);
     const response = await api.put(
-      '/atualizar/livros',
-      formValues
+      `/livros/${livro.id}`,
+      dados
     );
     console.log(response);
-    router.push(`/livros/${livro.id}`);
+    router.push(`/book/view`);
   }
   const values = {
     titulo: livro.titulo,
