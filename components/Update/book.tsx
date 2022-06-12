@@ -1,16 +1,12 @@
 import styles from './book.module.css';
 import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/router';
-import * as Yup from 'yup';
-import api from '../../pages/api/api';
 import { onlyDate } from '../Utils/cleanDate';
-import { DataAtual } from '../Utils/dateNow';
 import { onlyNumbers } from '../Utils/cleanPrice';
-type DataType = {
-  Autor: AutorType[];
-  livro: Livro;
-};
-type AutorType = {
+import { schema } from '../Validation/book';
+import api from '../../pages/api/api';
+type Data = string;
+type Autor = {
   id: number;
   nome: string;
   sobrenome: string;
@@ -33,68 +29,30 @@ type FormType = {
   preco: string;
 };
 
-// Esquema de validação usando Yup
-const schema = Yup.object().shape({
-  titulo: Yup.string()
-    .min(2, 'Insira um titulo maior')
-    .max(50, 'Insira um titulo menor')
-    .required('Insira um titulo valido'),
-  editora: Yup.string()
-    .min(4, 'Insira uma editora maior')
-    .max(50, 'Insira uma editora menor')
-    .required('Insira uma editora valida'),
-  autor: Yup.number()
-    .positive('Insira um autor com id positivo')
-    .integer('Insira um id inteiro')
-    .required('Insira um autor valido'),
-
-  data: Yup.date()
-    .max(DataAtual(), 'Digite uma data valida')
-    .required('Insira uma data valida'),
-  preco: Yup.number()
-    .positive('Insira um preço positivo')
-    .required('Insira um preço valido')
-});
-
 export default function AtualizarLivro({
-  Autor,
+  newAutor,
   livro
-}: DataType) {
-  const {
-    autor,
-    data_publicacao,
-    editora,
-    preco,
-    titulo,
-    id
-  } = livro;
+}: {
+  newAutor: Autor[];
+  livro: Livro;
+}) {
   let router = useRouter();
+
   //Função para fazer a atualização dos dados
-  async function handleSubmite({
-    autor,
-    data,
-    editora,
-    preco,
-    titulo,
-    id
-  }: FormType) {
-    const dados = {
-      id: id,
-      titulo: titulo,
-      autor: autor,
-      editora: editora,
-      data_publicacao: data,
-      preco: preco
-    };
-    const response = await api.put('/livros', dados);
-    router.push('/posts/mostrarLivro');
+  async function handleSubmite(formValues: FormType) {
+    const response = await api.put(
+      '/atualizar/livros',
+      formValues
+    );
+    console.log(response);
+    router.push(`/livros/${livro.id}`);
   }
   const values = {
-    titulo: titulo,
-    editora: editora,
-    autor: autor,
-    data: onlyDate(data_publicacao),
-    preco: onlyNumbers(preco)
+    titulo: livro.titulo,
+    editora: livro.editora,
+    autor: livro.autor,
+    data: onlyDate(livro.data_publicacao),
+    preco: onlyNumbers(livro.preco)
   };
   return (
     <>
@@ -138,10 +96,10 @@ export default function AtualizarLivro({
                 as="select"
                 placeholder="Autor"
               >
-                {Autor.map(({ id }) => {
+                {newAutor.map((autor) => {
                   return (
-                    <option value={id} key={id}>
-                      {id}
+                    <option value={autor.id} key={autor.id}>
+                      {autor.id}
                     </option>
                   );
                 })}

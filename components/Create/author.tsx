@@ -1,31 +1,15 @@
 import styles from './author.module.css';
-import { Formik, Form, FieldArray } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/router';
-import api from '../../pages/api/api';
 import { schema } from '../Validation/author';
-import { InputField } from '../Fields/input';
+import * as Yup from 'yup';
+import api from '../../pages/api/api';
 
-// import Post from '../components/Posts/index';
-const inputs = [
-  {
-    label: 'Nome',
-    name: 'nome',
-    type: 'text',
-    placeholder: 'Nome'
-  },
-  {
-    label: 'Sobrenome',
-    name: 'sobrenome',
-    type: 'text',
-    placeholder: 'Sobrenome'
-  },
-  {
-    label: 'Data de Nascimento',
-    name: 'date',
-    type: 'date',
-    placeholder: 'Data de Nascimento'
-  }
-];
+type Props = {
+  nome: string;
+  sobrenome: string;
+  data: string;
+};
 
 export default function CadastrarAutor() {
   let router = useRouter();
@@ -34,13 +18,14 @@ export default function CadastrarAutor() {
     data,
     nome,
     sobrenome
-  }: any) {
+  }: Props) {
     const dados = {
-      nome: nome,
-      sobrenome: sobrenome,
+      nome,
+      sobrenome,
       data_nascimento: data
     };
     const response = await api.post('/autor', dados);
+    console.log(response);
     router.push('/');
   }
   return (
@@ -51,14 +36,51 @@ export default function CadastrarAutor() {
         initialValues={{
           nome: '',
           sobrenome: '',
-          date: ''
+          data: ''
         }}
         onSubmit={handleSubmite}
       >
-        {({ values }) => (
+        {({ errors, touched }) => (
           <Form className={styles.container}>
-            <InputField inputs={inputs} />
+            <div className={styles.items}>
+              <label htmlFor="nome">Nome</label>
+              <Field
+                id="nome"
+                name="nome"
+                type="text"
+                placeholder="Nome"
+              />
+              {errors.nome && touched.nome && (
+                <span>{errors.nome}</span>
+              )}
+            </div>
+            <div className={styles.items}>
+              <label htmlFor="sobrenome">Sobrenome</label>
+              <Field
+                id="sobrenome"
+                name="sobrenome"
+                type="text"
+                placeholder="Sobrenome"
+              />
+              {errors.sobrenome && touched.sobrenome && (
+                <span>{errors.sobrenome}</span>
+              )}
+            </div>
 
+            <div className={styles.items}>
+              <label htmlFor="data">
+                Data de Nascimento
+              </label>
+              <Field
+                id="data"
+                name="data"
+                type="date"
+                placeholder="Data de Nascimento"
+              />
+              {errors.data && touched.data && (
+                <span>{errors.data}</span>
+              )}
+            </div>
             <button type="submit">Confirmar</button>
           </Form>
         )}

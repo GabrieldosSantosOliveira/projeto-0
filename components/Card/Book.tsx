@@ -1,4 +1,4 @@
-import { formatDate } from '../../pages/api/utils';
+import { formatDate } from '../Utils/utils';
 import Link from 'next/link';
 import styles from './book.module.css';
 import api from '../../pages/api/api';
@@ -24,7 +24,7 @@ export default function CardLivro({
     // Função chamada para deletar o livro do banco
     let confirmacao = confirm('Você quer deletar o Livro?');
     if (confirmacao == true) {
-      const response = await api.delete(`/livro/${id}`);
+      const response = await api.delete(`/livros/${id}`);
       console.log(response);
       if (!response.statusText) alert('Livro Não Excluido');
       alert('Livro Excluido');
@@ -41,10 +41,10 @@ export default function CardLivro({
       <div>{'R' + preco}</div>
       <button onClick={Deletar}>Deletar</button>
 
-      <Link href={`/posts/${id}`}>
+      <Link href={`/book/Update/${id}`}>
         <a>Atualizar</a>
       </Link>
-      <Link href={`/livro/${id}`}>
+      <Link href={`/book/MoreDetails/${id}`}>
         <a>Mostrar mais detalhes</a>
       </Link>
     </div>

@@ -1,95 +1,85 @@
 import styles from './author.module.css';
-import { Formik, Form, FormikProps } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/router';
-import { schema } from './../Validation/author';
+import * as Yup from 'yup';
 import api from '../../pages/api/api';
-import { Field } from 'formik';
+import { schema } from '../Validation/author';
 import { onlyDate } from './../Utils/cleanDate';
-type AutorType = {
+type Data = string;
+type Props = {
   id?: number;
   nome: string;
   sobrenome: string;
   data: string;
 };
-interface Values {
-  date: string;
-  sobrenome: string;
-  nome: string;
-}
 
 export default function AtualizarAutor({
   data,
   nome,
   sobrenome,
   id
-}: AutorType) {
+}: Props) {
   let router = useRouter();
   //Função para fazer a atualização dos dados
-  async function handleSubmite(form: any) {
-    console.log('Olá');
-    console.log(form);
-    const response = await api.put(`/autor/${id}`, form);
-    console.log(response);
+  async function handleSubmite(formValues: Props) {
+    const response = await api.put(
+      `/autor/${id}`,
+      formValues
+    );
     router.push('/');
   }
-  const inputs = [
-    {
-      label: 'Nome',
-      name: 'nome',
-      id: 'nome',
-      type: 'text',
-      placeholder: 'Nome',
-      inicial: nome
-    },
-    {
-      label: 'Sobrenome',
-      name: 'sobrenome',
-      id: 'sobrenome',
-      type: 'text',
-      placeholder: 'Sobrenome',
-      inicial: sobrenome
-    },
-    {
-      label: 'Data de Nascimento',
-      name: 'date',
-      id: 'date',
-      type: 'date',
-      inicial: onlyDate(data),
-      placeholder: 'Data de Nascimento'
-    }
-  ];
-  let values = {};
-  inputs.map((input) => {
-    values[`${input.name}`] = input.inicial;
-  });
   return (
     <>
       {/* Formulario  com valores iniciais e com errors e touched*/}
       <Formik
         validationSchema={schema}
-        initialValues={values}
+        initialValues={{
+          nome: nome,
+          sobrenome: sobrenome,
+          data: onlyDate(data)
+        }}
         onSubmit={handleSubmite}
       >
-        {() => (
+        {({ errors, touched }) => (
           <Form className={styles.container}>
-            <Field
-              placeholder="Nome"
-              label="Nome"
-              name="nome"
-              type="text"
-            />
-            <Field
-              placeholder="Sobrenome"
-              label="Sobrenome"
-              name="sobrenome"
-              type="text"
-            />
-            <Field
-              placeholder="Data"
-              label="Data"
-              name="data"
-              type="date"
-            />
+            <div className={styles.items}>
+              <label htmlFor="nome">Nome</label>
+              <Field
+                id="nome"
+                name="nome"
+                type="text"
+                placeholder="Nome"
+              />
+              {errors.nome && touched.nome && (
+                <span>{errors.nome}</span>
+              )}
+            </div>
+            <div className={styles.items}>
+              <label htmlFor="sobrenome">Sobrenome</label>
+              <Field
+                id="sobrenome"
+                name="sobrenome"
+                type="text"
+                placeholder="Sobrenome"
+              />
+              {errors.sobrenome && touched.sobrenome && (
+                <span>{errors.sobrenome}</span>
+              )}
+            </div>
+            <div className={styles.items}>
+              <label htmlFor="data">
+                Data de Nascimento
+              </label>
+              <Field
+                id="data"
+                name="data"
+                type="date"
+                placeholder="Data de Publicação"
+              />
+              {errors.data && touched.data && (
+                <span>{errors.data}</span>
+              )}
+            </div>
 
             <button type="submit">Confirmar</button>
           </Form>

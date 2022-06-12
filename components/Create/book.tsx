@@ -1,125 +1,127 @@
 import styles from './book.module.css';
-import { Formik, Form } from 'formik';
-import { Field } from '../Fields';
+import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
+import { schema } from '../Validation/book';
 import api from '../../pages/api/api';
-import { DataAtual } from '../Utils/dateNow';
-import { SelectAutor } from '../Input/OptionAutor';
-import { SelectField } from '../Fields/select';
-import { InputField } from './../Fields/input';
-type LivroType = {
+import { GetStaticProps } from 'next';
+
+type Props = {
   titulo: string;
-  autor: number | null;
+  autor: number;
   editora: string;
   data: string;
   preco: string;
 };
-type AutorType = {
-  autor: [
-    {
-      id: number;
-      nome: string;
-      sobrenome: string;
-      data_nascimento: string;
-    }
-  ];
+export type Autor = {
+  id: number;
+  nome: string;
+  sobrenome: string;
+  data_nascimento: string;
 };
-
-// Esquema de validação usando Yup
-const schema = Yup.object().shape({
-  titulo: Yup.string()
-    .min(2, 'Insira um titulo maior')
-    .max(50, 'Insira um titulo menor')
-    .required('Insira um titulo valido'),
-  editora: Yup.string()
-    .min(4, 'Insira uma editora maior')
-    .max(50, 'Insira uma editora menor')
-    .required('Insira uma editora valido'),
-  autor: Yup.number()
-    .required('Escolha um Autor')
-    .min(0)
-    .typeError('Escolha um autor'),
-  data: Yup.date()
-    .max(DataAtual(), 'Digite uma data valida')
-    .required('Insira uma data valida'),
-  preco: Yup.number()
-    .positive('Insira um preço positivo')
-    .required('Insira um preço valido')
-});
 
 export default function CadastrarLivro({
   autor
-}: AutorType) {
-  const inputs = [
-    {
-      label: 'Título',
-      name: 'titulo',
-      id: 'titulo',
-      type: 'text',
-      placeholder: 'Título'
-    },
-    {
-      label: 'Editora',
-      name: 'editora',
-      id: 'editora',
-      type: 'text',
-      placeholder: 'Editora'
-    },
-    {
-      label: 'Autor',
-      name: 'autor',
-      id: 'autor',
-      type: 'select',
-      options: SelectAutor(autor),
-      hidden: 'Selecione o Autor'
-    },
-    {
-      label: 'Data de Publicação',
-      name: 'data',
-      id: 'data',
-      type: 'date',
-      placeholder: 'Data de Publicação'
-    },
-    {
-      label: 'Preço',
-      name: 'preco',
-      id: 'preco',
-      type: 'number',
-      placeholder: 'Preço'
-    }
-  ];
+}: {
+  autor: Autor[];
+}) {
   let router = useRouter();
   //Função para fazer o post de Livro
-  async function handleSubmite({
-    autor,
-    data,
-    editora,
-    preco,
-    titulo
-  }: any) {
-    const dados = {
-      titulo: titulo,
-      autor: autor,
-      editora: editora,
-      data_publicacao: data,
-      preco: preco
+  async function handleSubmite(formValues: Props) {
+    const data = {
+      titulo: formValues.titulo,
+      autorId: formValues.autor,
+      editora: formValues.editora,
+      data_publicacao: formValues.data,
+      preco: formValues.preco
     };
-    const response = await api.post('/livros', dados);
-    router.push('/posts/mostrarLivro');
+    console.log(data);
+    const response = await api.post('/livros', data);
+    console.log(response);
+    router.push('/book/view');
   }
-
   return (
     <>
       {/* Formulario  com valores iniciais e com errors e touched*/}
       <Formik
         validationSchema={schema}
-        initialValues={{}}
+        initialValues={{
+          titulo: '',
+          editora: '',
+          autor: 0,
+          data: '',
+          preco: ''
+        }}
         onSubmit={handleSubmite}
       >
-        {({ errors, touched, values }) => (
+        {({ errors, touched }) => (
           <Form className={styles.container}>
-            <InputField inputs={inputs} />
+            <div className={styles.items}>
+              <label htmlFor="titulo">Título</label>
+              <Field
+                id="titulo"
+                name="titulo"
+                type="text"
+                placeholder="Título"
+              />
+              {errors.titulo && touched.titulo && (
+                <span>{errors.titulo}</span>
+              )}
+            </div>
+            <div className={styles.items}>
+              <label htmlFor="editora">Editora</label>
+              <Field
+                id="editora"
+                name="editora"
+                type="text"
+                placeholder="Editora"
+              />
+              {errors.editora && touched.editora && (
+                <span>{errors.editora}</span>
+              )}
+            </div>
+            <div className={styles.items}>
+              <label htmlFor="autor">Autor</label>
+              <Field id="autor" name="autor" as="select">
+                {autor.map((autor) => {
+                  return (
+                    <option value={autor.id} key={autor.id}>
+                      {autor.id} : {autor.nome}
+                    </option>
+                  );
+                })}
+              </Field>
+              {errors.autor && touched.autor && (
+                <span>{errors.autor}</span>
+              )}
+            </div>
+
+            <div className={styles.items}>
+              <label htmlFor="data">
+                Data de Publicação
+              </label>
+              <Field
+                id="data"
+                name="data"
+                type="date"
+                placeholder="Data de Publicação"
+              />
+              {errors.data && touched.data && (
+                <span>{errors.data}</span>
+              )}
+            </div>
+            <div className={styles.items}>
+              <label htmlFor="preco">Preço</label>
+              <Field
+                name="preco"
+                id="preco"
+                type="number"
+                placeholder="Preço"
+              />
+              {errors.preco && touched.preco && (
+                <span>{errors.preco}</span>
+              )}
+            </div>
             <button type="submit">Confirmar</button>
           </Form>
         )}

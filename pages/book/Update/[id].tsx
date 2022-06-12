@@ -47,7 +47,7 @@ export default function Atualizar({
     <>
       <div className={styles.container}>
         <Header />
-        <AtualizarLivro livro={livro} Autor={autor} />
+        <AtualizarLivro livro={livro} newAutor={autor} />
         <Footer />
       </div>
     </>

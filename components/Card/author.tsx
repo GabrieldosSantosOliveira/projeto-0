@@ -1,4 +1,4 @@
-import { formatDate } from '../../pages/api/utils';
+import { formatDate } from '../Utils/utils';
 import styles from './author.module.css';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -18,6 +18,7 @@ export default function CardAutor(props: AutorType) {
     let confirmacao = confirm('Você quer deletar o Autor?');
     if (confirmacao == true) {
       const response = await api.delete(`/autor/${id}`);
+      console.log(response);
       if (!response.statusText) alert('Autor Não Excluido');
 
       alert('Autor Excluido');
