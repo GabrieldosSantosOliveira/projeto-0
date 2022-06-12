@@ -1,8 +1,8 @@
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import AtualizarAutor from '../../components/AtualizarAutor';
-import styles from '../../styles/atualizarAutor.module.css';
-import api from '../api/api';
+import Header from '../../../components/Header';
+import Footer from '../../../components/Footer';
+import AtualizarAutor from '../../../components/Update/author';
+import styles from '../../../styles/atualizarAutor.module.css';
+import api from '../../api/api';
 import { GetServerSideProps } from 'next';
 
 type Autor = {

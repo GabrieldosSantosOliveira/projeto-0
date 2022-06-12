@@ -1,7 +1,7 @@
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import styles from '../../styles/cadastrarLivro.module.css';
-import CadastrarLivro from '../../components/CadastrarLivro';
+import CadastrarLivro from '../../components/Create/book';
 import api from '../api/api';
 import { GetStaticProps } from 'next';
 type AutorType = {

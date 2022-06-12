@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import styles from '../../styles/mostrarLivro.module.css';
 import api from '../api/api';
-import CardLivro from '../../components/CardLivro';
+import CardLivro from '../../components/Card/Book';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { GetServerSideProps } from 'next';

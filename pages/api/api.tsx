@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://ProjetoFinal.gabrieldos7.repl.co'
+  baseURL: 'http://localhost:3333'
 });
 
 export default api;

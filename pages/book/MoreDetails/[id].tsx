@@ -1,14 +1,14 @@
 import { GetServerSideProps } from 'next';
-import api from '../api/api';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import api from '../../api/api';
+import Header from '../../../components/Header';
+import Footer from '../../../components/Footer';
 import styles from '../../styles/livroDinamico.module.css';
 
 export const getServerSideProps: GetServerSideProps =
   async (ctx) => {
     const id = ctx.params?.id;
-    const response = await api.get(`/livro/${id}`);
-    const livro = response.data[0];
+    const response = await api.get(`/livros/${id}`);
+    const livro = response.data;
     return {
       props: {
         livro

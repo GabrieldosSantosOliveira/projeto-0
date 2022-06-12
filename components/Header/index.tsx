@@ -1,6 +1,6 @@
-import Link from "next/link";
-import styles from "../components/header.module.css";
-import { useState } from "react";
+import Link from 'next/link';
+import styles from './header.module.css';
+import { useState } from 'react';
 export default function Header() {
   const [isMobile, setIsMobile] = useState(false);
   return (
@@ -10,7 +10,9 @@ export default function Header() {
         <ul
           className={
             isMobile
-              ? styles.navLinksMobile + " " + styles.navLinks
+              ? styles.navLinksMobile +
+                ' ' +
+                styles.navLinks
               : styles.navLinks
           }
           onClick={() => setIsMobile(false)}
@@ -40,7 +42,11 @@ export default function Header() {
           className={styles.mobileMenuIcon}
           onClick={() => setIsMobile(!isMobile)}
         >
-          <div className={isMobile ? styles.animate : styles.animation}></div>
+          <div
+            className={
+              isMobile ? styles.animate : styles.animation
+            }
+          ></div>
         </button>
       </nav>
     </>

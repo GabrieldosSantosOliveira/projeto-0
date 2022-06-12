@@ -2,7 +2,7 @@ import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import CardAutor from '../components/CardAutor';
+import CardAutor from '../components/Card/author';
 import api from './api/api';
 import { GetServerSideProps } from 'next';
 

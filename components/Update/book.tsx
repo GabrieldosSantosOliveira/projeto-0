@@ -1,25 +1,36 @@
-import styles from '/components/cadastrarlivro.module.css';
+import styles from '/components/atualizarlivro.module.css';
 import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
-import api from '../pages/api/api';
-import { DataAtual } from './DataAtual';
-type LivroType = {
+import api from '../../pages/api/api';
+import { onlyDate } from '../Utils/cleanDate';
+import { DataAtual } from '../Utils/dateNow';
+import { onlyNumbers } from '../Utils/cleanPrice';
+type DataType = {
+  Autor: AutorType[];
+  livro: Livro;
+};
+type AutorType = {
+  id: number;
+  nome: string;
+  sobrenome: string;
+  data_nascimento: string;
+};
+type Livro = {
+  id?: number;
+  titulo: string;
+  autor: number;
+  editora: string;
+  data_publicacao: string;
+  preco: string;
+};
+type FormType = {
+  id?: number;
   titulo: string;
   autor: number;
   editora: string;
   data: string;
   preco: string;
-};
-type AutorType = {
-  autor: [
-    {
-      id: number;
-      nome: string;
-      sobrenome: string;
-      data_nascimento: string;
-    }
-  ];
 };
 
 // Esquema de validação usando Yup
@@ -31,7 +42,7 @@ const schema = Yup.object().shape({
   editora: Yup.string()
     .min(4, 'Insira uma editora maior')
     .max(50, 'Insira uma editora menor')
-    .required('Insira uma editora valido'),
+    .required('Insira uma editora valida'),
   autor: Yup.number()
     .positive('Insira um autor com id positivo')
     .integer('Insira um id inteiro')
@@ -45,41 +56,52 @@ const schema = Yup.object().shape({
     .required('Insira um preço valido')
 });
 
-export default function CadastrarLivro({
-  autor
-}: AutorType) {
+export default function AtualizarLivro({
+  Autor,
+  livro
+}: DataType) {
+  const {
+    autor,
+    data_publicacao,
+    editora,
+    preco,
+    titulo,
+    id
+  } = livro;
   let router = useRouter();
-  //Função para fazer o post de Livro
+  //Função para fazer a atualização dos dados
   async function handleSubmite({
     autor,
     data,
     editora,
     preco,
-    titulo
-  }: LivroType) {
+    titulo,
+    id
+  }: FormType) {
     const dados = {
+      id: id,
       titulo: titulo,
       autor: autor,
       editora: editora,
       data_publicacao: data,
       preco: preco
     };
-    const response = await api.post('/livros', dados);
+    const response = await api.put('/livros', dados);
     router.push('/posts/mostrarLivro');
   }
-  console.log(autor);
+  const values = {
+    titulo: titulo,
+    editora: editora,
+    autor: autor,
+    data: onlyDate(data_publicacao),
+    preco: onlyNumbers(preco)
+  };
   return (
     <>
       {/* Formulario  com valores iniciais e com errors e touched*/}
       <Formik
         validationSchema={schema}
-        initialValues={{
-          titulo: '',
-          editora: '',
-          autor: 0,
-          data: '',
-          preco: ''
-        }}
+        initialValues={values}
         onSubmit={handleSubmite}
       >
         {({ errors, touched }) => (
@@ -110,11 +132,16 @@ export default function CadastrarLivro({
             </div>
             <div className={styles.items}>
               <label htmlFor="autor">Autor</label>
-              <Field id="autor" name="autor" as="select">
-                {autor.map((autor) => {
+              <Field
+                id="autor"
+                name="autor"
+                as="select"
+                placeholder="Autor"
+              >
+                {Autor.map(({ id }) => {
                   return (
-                    <option value={autor.id} key={autor.id}>
-                      {autor.id} : {autor.nome}
+                    <option value={id} key={id}>
+                      {id}
                     </option>
                   );
                 })}

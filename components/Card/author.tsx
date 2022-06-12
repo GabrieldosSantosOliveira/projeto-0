@@ -1,8 +1,8 @@
-import { formatDate } from '../pages/api/utils';
+import { formatDate } from '../../pages/api/utils';
 import styles from '/components/cardautor.module.css';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import api from '../pages/api/api';
+import api from '../../pages/api/api';
 
 type AutorType = {
   id?: number;

@@ -1,7 +1,7 @@
-import { formatDate } from '../pages/api/utils';
+import { formatDate } from '../../pages/api/utils';
 import Link from 'next/link';
 import styles from '/components/cardlivro.module.css';
-import api from '../pages/api/api';
+import api from '../../pages/api/api';
 
 type LivroType = {
   id?: number;

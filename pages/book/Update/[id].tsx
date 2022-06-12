@@ -1,8 +1,8 @@
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import AtualizarLivro from '../../components/AtualizarLivro';
+import Header from '../../../components/Header';
+import Footer from '../../../components/Footer';
+import AtualizarLivro from '../../../components/Update/book';
 import styles from '../../styles/atualizarLivro.module.css';
-import api from '../api/api';
+import api from '../../api/api';
 import { GetServerSideProps } from 'next';
 
 type LivroType = {
