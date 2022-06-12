@@ -1,17 +1,31 @@
 import styles from './author.module.css';
-import {
-  Formik,
-  Form,
-  Field,
-  FieldArray,
-  ErrorMessage
-} from 'formik';
+import { Formik, Form, FieldArray } from 'formik';
 import { useRouter } from 'next/router';
 import api from '../../pages/api/api';
 import { schema } from '../Validation/author';
-import { Input } from '../Input';
-import { SelectAutor } from '../Input/OptionAutor';
+import { InputField } from '../Fields/input';
+
 // import Post from '../components/Posts/index';
+const inputs = [
+  {
+    label: 'Nome',
+    name: 'nome',
+    type: 'text',
+    placeholder: 'Nome'
+  },
+  {
+    label: 'Sobrenome',
+    name: 'sobrenome',
+    type: 'text',
+    placeholder: 'Sobrenome'
+  },
+  {
+    label: 'Data de Nascimento',
+    name: 'date',
+    type: 'date',
+    placeholder: 'Data de Nascimento'
+  }
+];
 
 export default function CadastrarAutor() {
   let router = useRouter();
@@ -35,35 +49,16 @@ export default function CadastrarAutor() {
       <Formik
         validationSchema={schema}
         initialValues={{
-          inputs: [
-            {
-              label: 'Nome',
-              name: 'nome',
-              id: 'nome',
-              type: 'text',
-              placeholder: 'Nome'
-            },
-            {
-              label: 'Sobrenome',
-              name: 'sobrenome',
-              id: 'sobrenome',
-              type: 'text',
-              placeholder: 'Sobrenome'
-            },
-            {
-              label: 'Data de Nascimento',
-              name: 'date',
-              id: 'date',
-              type: 'date',
-              placeholder: 'Data de Nascimento'
-            }
-          ]
+          nome: '',
+          sobrenome: '',
+          date: ''
         }}
         onSubmit={handleSubmite}
       >
         {({ values }) => (
           <Form className={styles.container}>
-            <FieldArray name="input" render={() => <></>} />
+            <InputField inputs={inputs} />
+
             <button type="submit">Confirmar</button>
           </Form>
         )}

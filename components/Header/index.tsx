@@ -18,12 +18,12 @@ export default function Header() {
           onClick={() => setIsMobile(false)}
         >
           <li className={styles.autor}>
-            <Link href="/posts/cadastrarAutor">
+            <Link href="/author/add">
               <a>Autores</a>
             </Link>
           </li>
           <li className={styles.livro}>
-            <Link href="/posts/cadastrarLivro">
+            <Link href="/book/add">
               <a>Livros</a>
             </Link>
           </li>
@@ -33,7 +33,7 @@ export default function Header() {
             </Link>
           </li>
           <li className={styles.mostrarLivro}>
-            <Link href="/posts/mostrarLivro">
+            <Link href="/book/view">
               <a>Mostrar Livro</a>
             </Link>
           </li>

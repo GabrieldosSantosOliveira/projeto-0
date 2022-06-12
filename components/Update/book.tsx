@@ -1,4 +1,4 @@
-import styles from '/components/atualizarlivro.module.css';
+import styles from './book.module.css';
 import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';

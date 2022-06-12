@@ -1,5 +1,5 @@
 import { formatDate } from '../../pages/api/utils';
-import styles from '/components/cardautor.module.css';
+import styles from './author.module.css';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import api from '../../pages/api/api';
@@ -32,8 +32,11 @@ export default function CardAutor(props: AutorType) {
       <div>{formatDate(props.data)}</div>
       <div className={styles.botoes}>
         <button onClick={Deletar}>Deletar</button>
-        <Link href={`/autor/${id}`}>
+        <Link href={`/author/Update/${id}`}>
           <a>Atualizar</a>
+        </Link>
+        <Link href={`/author/MoreDetails/${id}`}>
+          <a>Mais Detalhes</a>
         </Link>
       </div>
     </div>

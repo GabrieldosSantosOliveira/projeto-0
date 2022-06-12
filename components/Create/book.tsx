@@ -1,12 +1,13 @@
-import styles from '/components/cadastrarlivro.module.css';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import styles from './book.module.css';
+import { Formik, Form } from 'formik';
+import { Field } from '../Fields';
 import { useRouter } from 'next/router';
 import * as Yup from 'yup';
 import api from '../../pages/api/api';
 import { DataAtual } from '../Utils/dateNow';
 import { SelectAutor } from '../Input/OptionAutor';
-import { Input } from '../Input';
-
+import { SelectField } from '../Fields/select';
+import { InputField } from './../Fields/input';
 type LivroType = {
   titulo: string;
   autor: number | null;
@@ -50,6 +51,44 @@ const schema = Yup.object().shape({
 export default function CadastrarLivro({
   autor
 }: AutorType) {
+  const inputs = [
+    {
+      label: 'Título',
+      name: 'titulo',
+      id: 'titulo',
+      type: 'text',
+      placeholder: 'Título'
+    },
+    {
+      label: 'Editora',
+      name: 'editora',
+      id: 'editora',
+      type: 'text',
+      placeholder: 'Editora'
+    },
+    {
+      label: 'Autor',
+      name: 'autor',
+      id: 'autor',
+      type: 'select',
+      options: SelectAutor(autor),
+      hidden: 'Selecione o Autor'
+    },
+    {
+      label: 'Data de Publicação',
+      name: 'data',
+      id: 'data',
+      type: 'date',
+      placeholder: 'Data de Publicação'
+    },
+    {
+      label: 'Preço',
+      name: 'preco',
+      id: 'preco',
+      type: 'number',
+      placeholder: 'Preço'
+    }
+  ];
   let router = useRouter();
   //Função para fazer o post de Livro
   async function handleSubmite({
@@ -75,52 +114,12 @@ export default function CadastrarLivro({
       {/* Formulario  com valores iniciais e com errors e touched*/}
       <Formik
         validationSchema={schema}
-        initialValues={{
-          inputs: [
-            {
-              label: 'Título',
-              name: 'titulo',
-              id: 'titulo',
-              type: 'text',
-              placeholder: 'Título'
-            },
-            {
-              label: 'Editora',
-              name: 'editora',
-              id: 'editora',
-              type: 'text',
-              placeholder: 'Editora'
-            },
-            {
-              label: 'Autor',
-              name: 'autor',
-              id: 'autor',
-              type: 'select',
-              options: SelectAutor(autor),
-              hidden: 'Selecione o Autor'
-            },
-            {
-              label: 'Data de Publicação',
-              name: 'data',
-              id: 'data',
-              type: 'date',
-              placeholder: 'Data de Publicação'
-            },
-            {
-              label: 'Preço',
-              name: 'preco',
-              id: 'preco',
-              type: 'number',
-              placeholder: 'Preço'
-            }
-          ]
-        }}
+        initialValues={{}}
         onSubmit={handleSubmite}
       >
         {({ errors, touched, values }) => (
           <Form className={styles.container}>
-            <Input styles={styles} values={values} />
-
+            <InputField inputs={inputs} />
             <button type="submit">Confirmar</button>
           </Form>
         )}

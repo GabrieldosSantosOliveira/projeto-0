@@ -7,7 +7,7 @@ type AutorType = [
   }
 ];
 
-export const SelectAutor = (props: AutorType) => {
+export const SelectAutor = (props: AutorType): any => {
   return (
     <>
       {props.map(
