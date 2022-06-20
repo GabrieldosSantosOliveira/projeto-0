@@ -14,7 +14,7 @@ type Autor = {
 type Livro = {
   id?: number;
   titulo: string;
-  autor: number;
+  autorId: number;
   editora: string;
   data_publicacao: string;
   preco: string;
@@ -47,7 +47,7 @@ export default function AtualizarLivro({
   }: FormType) {
     const dados = {
       autor,
-      data_publicacao: data + 'T00:00:00.000Z',
+      data_publicacao: data,
       editora,
       preco,
       titulo
@@ -63,7 +63,7 @@ export default function AtualizarLivro({
   const values = {
     titulo: livro.titulo,
     editora: livro.editora,
-    autor: livro.autor,
+    autor: livro.autorId,
     data: onlyDate(livro.data_publicacao),
     preco: onlyNumbers(livro.preco)
   };

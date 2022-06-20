@@ -9,7 +9,7 @@ type LivroType = {
   livro: {
     id: number;
     titulo: string;
-    autor: number;
+    autorId: number;
     editora: string;
     data_publicacao: string;
     preco: string;
